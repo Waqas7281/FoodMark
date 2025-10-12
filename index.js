@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend URL
+    origin: process.env.FRONTEND_URL || "http://localhost:5173", // Replace with your frontend URL
     credentials: true,
   })
 );
@@ -27,10 +27,17 @@ app.use((err, req, res, next) => {
 });
 app.use(cookieParser());
 
+// Root route for Vercel deployment
+app.get("/", (req, res) => {
+  res.json({ message: "FoodCover API is running" });
+});
+
 app.use("/api/auth", authRouter);
 
-// Connect to DB on startup
-connectDB();
+// Connect to DB on startup (for local dev)
+if (require.main === module) {
+    connectDB();
+}
 
 if (require.main === module) {
   app.listen(port, () => {

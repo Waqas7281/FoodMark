@@ -2,12 +2,18 @@ const authRoute = require("express").Router();
 const { signup, signIn, signOut,sendOtp,verifyOtp,resetPassword } = require("../controllers/auth.controller");
 const authenticateToken = require("../middlewares/auth.middleware");
 
+
+
+
 authRoute.post("/signup", signup);
 authRoute.post("/signin", signIn);
 authRoute.get("/signout", signOut);
 authRoute.post("/sendotp", sendOtp);
 authRoute.post("/verifyOtp", verifyOtp);
 authRoute.post("/resetPassword", resetPassword);
+authRoute.get("/getData", getData);
+
+
 
 
 // Protected route to test token expiration

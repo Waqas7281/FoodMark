@@ -138,16 +138,41 @@ const resetPassword = async (req,res)=>{
     }
 }
 
+const getData = async (req, res) => {
+    try {
+        const data = [
+            {
+                id: 1,
+                fullName: 'John Doe',
+                email: 'john.doe@example.com',
+                role: 'user',
+                phoneNumber: '01234567890',
+            },
+            {
+                id: 2,
+                fullName: 'Jane Smith',
+                email: 'jane.smith@example.com',
+                role: 'admin',
+                phoneNumber: '09876543210',
+            },
+        ];
+        return res.status(200).json(data);
+    } catch (error) {
+        return res.status(500).json({ message: `Get data error: ${error.message}` });
+    }
+};
+
 
 
 
 
 
 module.exports = {
-    signup,
-    signIn,
-    signOut,
-    sendOtp,
-    verifyOtp,
-    resetPassword
+  signup,
+  signIn,
+  signOut,
+  sendOtp,
+  verifyOtp,
+  resetPassword,
+  getData,
 };
