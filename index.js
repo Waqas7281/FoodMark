@@ -34,10 +34,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 
-// Connect to DB on startup (for local dev)
-if (require.main === module) {
-    connectDB();
-}
+// Connect to DB on startup (for serverless compatibility)
+connectDB();
 
 if (require.main === module) {
   app.listen(port, () => {
