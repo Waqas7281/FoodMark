@@ -19,13 +19,16 @@ const connectDB = async () => {
         cached.promise = mongoose.connect(process.env.MONGO_URI, opts).then((mongoose) => {
             console.log('MongoDB connected');
             return mongoose;
+        }).catch((error) => {
+            console.error('MongoDB connection error:', error);
+            throw error;
         });
     }
 
     try {
         cached.conn = await cached.promise;
     } catch (error) {
-        console.log(error);
+        console.error('Failed to connect to MongoDB:', error);
         throw error;
     }
 

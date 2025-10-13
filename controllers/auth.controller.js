@@ -26,8 +26,8 @@ const signup = async (req, res) => {
         });
         const token = genToken(user._id);
         res.cookie('token', token, {
-            secure: false,
-            sameSite: "strict",
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
             maxAge: 7*24*60*60*1000, // 7 days
             httpOnly: true,
         });
@@ -50,8 +50,8 @@ const signIn = async (req, res) => {
         }
         const token = genToken(user._id);
         res.cookie("token", token, {
-          secure: false,
-          sameSite: "strict",
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
           httpOnly: true,
         });

@@ -13,8 +13,7 @@ app.use(
   cors({
     origin: process.env.FRONTEND_URL || "http://localhost:5173", // Replace with your frontend URL
     credentials: true,
-  }),
-  console.log(process.env.FRONTEND_URL)
+  })
 );
 
 app.use(express.json());
@@ -36,7 +35,9 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouter);
 
 // Connect to DB on startup (for serverless compatibility)
-connectDB();
+connectDB().catch((err) => {
+  console.error("DB connection failed:", err);
+});
 
 if (require.main === module) {
   app.listen(port, () => {
