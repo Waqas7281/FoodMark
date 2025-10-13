@@ -11,8 +11,25 @@ const port = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin:
-      process.env.FRONTEND_URL || "https://frontend-food-mark.vercel.app/", // Replace with your frontend URL
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      // Allow localhost for development
+      if (origin === "http://localhost:5173") return callback(null, true);
+
+      // Allow Vercel deployed frontends (remove trailing slash if present)
+      if (origin.endsWith('.vercel.app')) return callback(null, true);
+
+      // Allow specific frontend URL if set (remove trailing slash if present)
+      if (process.env.FRONTEND_URL) {
+        const allowedOrigin = process.env.FRONTEND_URL.replace(/\/$/, ''); // Remove trailing slash
+        if (origin === allowedOrigin) return callback(null, true);
+      }
+
+      // Reject other origins
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
   })
 );
