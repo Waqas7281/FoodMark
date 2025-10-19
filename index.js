@@ -51,8 +51,8 @@ app.get("/", (req, res) => {
   res.json({ message: "FoodCover API is running" });
 });
 
-app.use("/api/auth", authRouter);
-app.use("/api/user", userRouter);
+app.use("api/auth", authRouter);
+app.use("api/user", userRouter);
 
 // Connect to DB on startup (for serverless compatibility)
 connectDB().catch((err) => {
