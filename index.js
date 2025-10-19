@@ -51,13 +51,15 @@ app.get("/", (req, res) => {
   res.json({ message: "FoodCover API is running" });
 });
 
+connectDB().catch((err) => {
+  console.error("DB connection failed:", err);
+});
+
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 
 // Connect to DB on startup (for serverless compatibility)
-connectDB().catch((err) => {
-  console.error("DB connection failed:", err);
-});
+
 
 if (require.main === module) {
   app.listen(port, () => {

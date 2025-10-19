@@ -143,6 +143,31 @@ const resetPassword = async (req,res)=>{
     }
 }
 
+const googleAuth = async (req, res) => {
+    try {
+        const { email, fullName, role, phoneNumber } = req.body;
+        let user = await User.findOne({ email });
+        if (!user) {
+            user = await User.create({
+                fullName,
+                email,
+                role: role || 'User',
+                phoneNumber: phoneNumber || '',
+            });
+        }
+        const token = genToken(user._id);
+        res.cookie('token', token, {
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            maxAge: 7*24*60*60*1000, // 7 days
+            httpOnly: true,
+        });
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).json({ message: `Google auth error: ${error.message}` });
+    }
+};
+
 const getData = async (req, res) => {
     try {
         const data = [
@@ -179,5 +204,6 @@ module.exports = {
   sendOtp,
   verifyOtp,
   resetPassword,
+  googleAuth,
   getData,
 };
