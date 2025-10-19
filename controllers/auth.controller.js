@@ -4,6 +4,10 @@ const genToken = require('../utils/token');
 const sendMail = require('../utils/mail');
 
 const signup = async (req, res) => {
+    if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  })};
     try {
         const { fullName, email, password, phoneNumber, role } = req.body;
         const userExists = await User.findOne({ email });
@@ -31,6 +35,7 @@ const signup = async (req, res) => {
             maxAge: 7*24*60*60*1000, // 7 days
             httpOnly: true,
         });
+
         return res.status(201).json(user);
     } catch (error) {
         return res.status(500).json({ message: `Sign up error: ${error.message}` });
