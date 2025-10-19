@@ -79,6 +79,7 @@ const sendOtp = async (req, res) => {
     // Implementation for sending OTP
     try{
         const { email } = req.body;
+        console.log(email);
         const user = await User.findOne({ email });
         if(!user){
             return res.status(400).json({ message: "User does not exist" });
